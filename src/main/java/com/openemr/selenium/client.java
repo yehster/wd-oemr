@@ -8,9 +8,12 @@ package com.openemr.selenium;
 
 
 import java.util.Set;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 /**
  *
  * @author yehster
@@ -44,7 +47,10 @@ public class client {
     {
         this.wd.switchTo().defaultContent();
         this.wd.switchTo().frame("left_nav");
-        this.wd.findElement(By.cssSelector(css)).click();
+        WebDriverWait wdw = new WebDriverWait(wd,10);
+        WebElement elem=this.wd.findElement(By.cssSelector(css));
+        wdw.until(ExpectedConditions.elementToBeClickable(elem));
+        elem.click();
         
     }
     
@@ -68,10 +74,37 @@ public class client {
         el.click();
         return el;
     }
+    
+    public WebElement setSelectByContent(String css,String value)
+    {
+        WebElement el=this.byCSS(css);
+        List<WebElement> options=el.findElements(By.cssSelector("option"));
+        for(WebElement option: options)
+        {
+            if(option.getText().equals(value))
+            {
+                option.click();
+            }
+        }
+        
+        return el;
+    }    
     public void switchToPopup()
     {
         Set<String> handles=this.wd.getWindowHandles();
         this.wd.switchTo().window((String)handles.toArray()[1]);
+    }
+    
+    public void switchToTop()
+    {
+        Set<String> handles=this.wd.getWindowHandles();
+        this.wd.switchTo().window((String)handles.toArray()[0]);
+    }    
+    
+    public void switchToEncounter()
+    {
+        this.wd.switchTo().defaultContent();
+        this.wd.switchTo().frame("RBot");
     }
     public void login()
     {

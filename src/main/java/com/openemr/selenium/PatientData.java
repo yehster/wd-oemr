@@ -11,7 +11,7 @@ package com.openemr.selenium;
  * @author yehster
  */
 public class PatientData {
-    protected String fname,lname,DOB,sex;
+    protected String fname,lname,DOB,sex,mothers_name;
     public PatientData(String fname,String lname,String DOB,String sex)
     {
         this.fname=fname;
@@ -39,5 +39,15 @@ public class PatientData {
     public String get_sex()
     {
         return this.sex;
-    }    
+    }
+    
+    public void set_mothers_name(String val)
+    {
+        this.mothers_name=val;
+    }
+    
+    public String get_mothers_name()
+    {
+        return this.mothers_name;
+    }
 }
