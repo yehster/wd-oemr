@@ -15,7 +15,7 @@ import org.openqa.selenium.Alert;
  */
 public class tasks {
     
-    protected client cl;
+    public client cl;
     public tasks(client cl)
     {
         this.cl=cl;
@@ -25,7 +25,8 @@ public class tasks {
     {
         createPatient(data,false);
     }
-    public void createPatient(PatientData data,boolean useExisting)
+    
+    public void populatePatientSearch(PatientData data)
     {
         this.cl.menuClick("#new0");
         this.cl.switchToMain();
@@ -37,6 +38,11 @@ public class tasks {
         {
             this.cl.setField("#form_usertext2", data.get_mothers_name());
         }
+        
+    }
+    public void createPatient(PatientData data,boolean useExisting)
+    {
+        populatePatientSearch(data);
         this.cl.byCSS("#create").click();            
 
 
@@ -55,7 +61,8 @@ public class tasks {
                     String sex=srFields.get(2).getText();
                     String dob=srFields.get(1).getText();
                     System.out.println(name+":"+dob+":"+sex);
-                    match= name.equals(data.get_lname()+", "+data.get_fname()) && sex.equals(data.get_sex()) && dob.equals(data.get_DOB());
+                    // Match on other criteria needs tweaking for IPPF
+                    match= name.equalsIgnoreCase(data.get_lname()+", "+data.get_fname()); // && sex.equals(data.get_sex()) && dob.equals(data.get_DOB());
                     if(match)
                     {
                         result.click();
@@ -77,34 +84,81 @@ public class tasks {
             this.cl.byCSS("input[type='button'][value='Confirm Create New Patient']").click();        
         }
         this.cl.switchToTop();
+        this.cl.switchToMain();
+        this.cl.waitFor("span.title");
+        // Add wait for Patient Info
 
     }
     
-    public void newEncounter(String description, String category)
+     public void newEncounter(String description, String category) throws Exception
+    {
+        newEncounter(description,category,true);
+    }
+    
+    public void newEncounter(String description, String category, boolean createNew) throws Exception
     {
         System.out.println("Starting Encounter");
         this.cl.menuClick("#nen1");
-        this.cl.switchToEncounter();
         try{
+            Alert al =this.cl.wd.switchTo().alert();
+            System.out.println(al.getText());
+            //Warning: A visit was already created for this patient today!
+            //A visit already exists for this patient today. Click Cancel to open it, or OK to proceed with creating a new one.
             
-                this.cl.byName("reason").sendKeys(description);
-                this.cl.setSelectByContent("#pc_catid", category);
-                this.cl.byCSS("a[href='javascript:saveClicked();']").click();
+            // Create New even if existing present
+            if(createNew)
+            {
+                System.out.println("Ok Create New");
+                al.accept();            
+            }
+            else
+            {   
+                System.out.println("Cancel. Open Existing");
+                al.dismiss();
+                return;
+            }
+        }
+        catch(Exception e)
+        {
+            
+        }
+  
+        this.cl.switchToEncounter();          
+        this.cl.byName("reason").sendKeys(description);
+        this.cl.setSelectByContent("#pc_catid", category);
+        this.cl.byCSS("a[href='javascript:saveClicked();']").click();
+                    
+
+        
+    }
+    
+    public void gotoFeeSheet()
+    {
+        this.cl.menuSection("Fees");
+        this.cl.menuForm("fee_sheet");
+    }
+    
+    public void feeSheetMultiCategory(String category)
+    {
+        try
+        {
+            Thread.sleep(2000);
             
         }
         catch(Exception e)
         {
-            System.out.println(e.toString());
-//            this.cl.wd.switchTo().alert().dismiss();
-            this.cl.switchToTop();
-            this.cl.switchToEncounter();
-            this.cl.byName("reason").sendKeys(description);
-            this.cl.setSelectByContent("#pc_catid", category);
-            this.cl.byCSS("a[href='javascript:saveClicked();']").click();            
+            
         }
-        
-
-        
+        String css="div.category-display > span";
+        List<WebElement> categories = this.cl.elemsCSS(css);
+        for(WebElement elem: categories)
+        {
+            System.out.println(elem.getText().trim());
+            if(elem.getText().trim().equals(category))
+            {
+                elem.click();
+            }
+        }
     }
     
 }

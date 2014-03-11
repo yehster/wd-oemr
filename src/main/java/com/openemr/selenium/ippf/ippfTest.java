@@ -4,8 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.openemr.selenium;
+package com.openemr.selenium.ippf;
 
+import com.openemr.selenium.PatientData;
+import com.openemr.selenium.client;
+import com.openemr.selenium.remote;
+import com.openemr.selenium.tasks;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -27,7 +31,7 @@ public class ippfTest {
             cl.login();
             
             tasks taskDriver = new tasks(cl);
-           PatientData pat = new PatientData("Test","Male","1980-02-03","Male");
+           PatientData pat = new PatientData("Test","Male2","1980-02-03","Male");
            pat.set_mothers_name("MothersName");
            taskDriver.createPatient(pat,true);
            taskDriver.newEncounter("Test Encounter", "2 Re-Visit / Re-Supply");

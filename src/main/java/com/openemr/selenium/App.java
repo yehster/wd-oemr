@@ -17,16 +17,23 @@ public class App
         {
             WebDriver driver =  remote.build("http://127.0.0.1:4444/wd/hub");
             //driver.initialize();
-            client cl= new client(driver,"http://192.168.1.20/opendev/pcmedics","admin","pass");
-//            client cl= new client(driver,"http://192.168.1.20/opendev/ippf","kyeh","kyeh");
+//            client cl= new client(driver,"http://192.168.1.20/opendev/pcmedics","admin","pass");
+//            client cl= new client(driver,"http://192.168.1.20/opendev/pcmedics","admin","pass");
+            client cl= new client(driver,"http://demo.open-emr.org:2089/openemr","admin","pass");
 
             cl.login();
             
             tasks taskDriver = new tasks(cl);
            PatientData pat = new PatientData("Test","Male","1980-02-03","Male");
 
-           taskDriver.createPatient(pat,true);
-           taskDriver.newEncounter("Test Encounter", "Established Patient");
+//           taskDriver.createPatient(pat,false);
+           for(int i=0;i<10;i++)
+           {
+               pat = new PatientData("Test"+i,"Female","1980-0"+i+"-03","Female");
+               taskDriver.createPatient(pat);
+               
+           }
+//           taskDriver.newEncounter("Test Encounter", "Established Patient");
 //            cl.menuClick("input[type='checkbox'][name='cb_bot']");
 
 

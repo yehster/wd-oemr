@@ -43,6 +43,10 @@ public class client {
         return this.wd.findElement(By.cssSelector(css));
     }
     
+    public List<WebElement> elemsCSS(String css)
+    {
+        return this.wd.findElements(By.cssSelector(css));
+    }
     public void menuClick(String css)
     {
         this.wd.switchTo().defaultContent();
@@ -54,6 +58,39 @@ public class client {
         
     }
     
+    public void menuSection(String title)
+    {
+    this.wd.switchTo().defaultContent();
+    this.wd.switchTo().frame("left_nav");        
+       List<WebElement> Sections= this.wd.findElements(By.cssSelector("#navigation > li > span"));
+       for(WebElement element: Sections)
+       {
+           if(element.getText().equals(title))
+           {
+               System.out.println(title);
+               element.click();
+           }
+       }
+    }
+    
+    public void menuForm(String formname)
+    {
+        this.wd.switchTo().defaultContent();
+        this.wd.switchTo().frame("left_nav");
+        WebDriverWait wdw = new WebDriverWait(wd,10);
+        String onclick="return loadFrame2('cod2','RBot','patient_file/encounter/load_form.php?formname=";
+        String css=("a[onclick=\""+onclick+formname+"')\"]");
+        WebElement elem=this.wd.findElement(By.cssSelector(css));
+        wdw.until(ExpectedConditions.elementToBeClickable(elem));        
+        elem.click();        
+    }
+    
+    public WebElement waitFor(String css)
+    {
+        WebDriverWait wait=new WebDriverWait(this.wd,10);
+        WebElement element= wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(css)));
+        return element;
+    }
     public WebElement setField(String css,String value)
     {
         WebElement el=this.byCSS(css);
@@ -113,6 +150,8 @@ public class client {
         this.byName("authUser").sendKeys(this.user);
         this.byName("clearPass").sendKeys(this.password);
         this.byCSS("input[value='Login']").click();
+        
+        this.switchToMain();
     }
     public WebDriver wd()
     {
