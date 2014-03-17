@@ -14,6 +14,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.JavascriptExecutor;
 /**
  *
  * @author yehster
@@ -157,4 +158,36 @@ public class client {
     {
         return this.wd;
     }
+    
+    public void activateEncounterFrame()
+    {
+        this.wd.switchTo().defaultContent();
+        this.wd.switchTo().frame("RBot");
+        this.wd.switchTo().frame("Forms");
+        
+    }
+    
+    public void jsEval(String js)
+    {
+        ((JavascriptExecutor)this.wd).executeScript(js);
+    }
+    public void gotoEncounterForm(String formName)
+    {
+        this.jsEval("mopen('3')");
+        System.out.println(this.wd.getTitle());
+        String onclickString="openNewForm('/opendev/pcmedics/interface/patient_file/encounter/load_form.php?formname="+formName+"')";
+        String css=("a[onclick=\""+onclickString+"\"]");
+        WebElement elem=this.wd.findElement(By.cssSelector(css));
+        WebDriverWait wdw = new WebDriverWait(wd,10);        
+        wdw.until(ExpectedConditions.elementToBeClickable(elem));           
+        elem.click();
+        
+    }
+    
+    public void gotoVitals()
+    {
+        activateEncounterFrame();
+//        try{Thread.sleep(3000);} catch(Exception e){}
+        gotoEncounterForm("vitals");
+    }    
 }

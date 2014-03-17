@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.openemr.selenium.ippf;
+package com.openemr.selenium.pcmedics;
 
 import com.openemr.selenium.PatientData;
 import com.openemr.selenium.client;
@@ -25,18 +25,16 @@ public class pcmedicsFormsTests {
         {
             WebDriver driver =  remote.build("http://127.0.0.1:4444/wd/hub");
             //driver.initialize();
-//            client cl= new client(driver,"http://192.168.1.20/opendev/pcmedics","admin","pass");
-            client cl= new client(driver,"http://192.168.1.20/opendev/ippf","kyeh","kyeh");
+            client cl= new client(driver,"http://192.168.1.20/opendev/pcmedics","admin","pass");
+//            client cl= new client(driver,"http://192.168.1.20/opendev/ippf","kyeh","kyeh");
 
             cl.login();
             
             tasks taskDriver = new tasks(cl);
-           PatientData pat = new PatientData("Test","Male2","1980-02-03","Male");
-           pat.set_mothers_name("MothersName");
-           taskDriver.createPatient(pat,false);
-           taskDriver.newEncounter("Test Encounter", "2 Re-Visit / Re-Supply");
-           taskDriver.newEncounter("Update Existing", "2 Re-Visit / Re-Supply",false);
-           taskDriver.newEncounter("Forced New", "5 Administrative",true);
+           PatientData pat = new PatientData("Test","Replication","1980-02-03","Male");
+           taskDriver.createPatient(pat,true);
+           taskDriver.newEncounter("Patient Encounter Form", "New Patient");
+           cl.gotoVitals();
 
 //            cl.menuClick("input[type='checkbox'][name='cb_bot']");
 
