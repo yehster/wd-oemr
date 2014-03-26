@@ -16,8 +16,8 @@ import org.openqa.selenium.WebDriver;
  *
  * @author yehster
  */
-public class ippfEncounterTest {
-    public static void main( String[] args )
+public class ippfNewPatientTest {
+        public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
 
@@ -34,13 +34,6 @@ public class ippfEncounterTest {
            PatientData pat = new PatientData("Test","Male2","1980-02-03","Male");
            pat.set_mothers_name("MothersName");
            taskDriver.createPatient(pat,false);
-           taskDriver.newEncounter("Test Encounter", "2 Re-Visit / Re-Supply");
-           taskDriver.newEncounter("Update Existing", "2 Re-Visit / Re-Supply",false);
-           taskDriver.newEncounter("Forced New", "5 Administrative",true);
-
-//            cl.menuClick("input[type='checkbox'][name='cb_bot']");
-
-
         }
         catch(Exception e)
         {

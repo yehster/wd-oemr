@@ -16,10 +16,10 @@ import org.openqa.selenium.WebDriver;
  *
  * @author yehster
  */
-public class ippfEncounterTest {
+public class ippfTallySheetFlowInitialContraceptive {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        System.out.println( "Tally Sheet Flow Start" );
 
         try
         {
@@ -31,16 +31,15 @@ public class ippfEncounterTest {
             cl.login();
             
             tasks taskDriver = new tasks(cl);
-           PatientData pat = new PatientData("Test","Male2","1980-02-03","Male");
+            
+           PatientData pat = new PatientData("Tally","Test","1980-02-03","Female");
            pat.set_mothers_name("MothersName");
            taskDriver.createPatient(pat,false);
-           taskDriver.newEncounter("Test Encounter", "2 Re-Visit / Re-Supply");
-           taskDriver.newEncounter("Update Existing", "2 Re-Visit / Re-Supply",false);
-           taskDriver.newEncounter("Forced New", "5 Administrative",true);
-
-//            cl.menuClick("input[type='checkbox'][name='cb_bot']");
-
-
+           
+           taskDriver.enterEncounter("Tally Sheet Contraception", "2 Re-Visit / Re-Supply");
+           taskDriver.cl.activateEncounterFrame();
+           taskDriver.cl.jsEval("gotoFee_sheet();");
+           
         }
         catch(Exception e)
         {

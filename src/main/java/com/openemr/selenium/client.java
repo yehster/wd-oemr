@@ -189,5 +189,10 @@ public class client {
         activateEncounterFrame();
 //        try{Thread.sleep(3000);} catch(Exception e){}
         gotoEncounterForm("vitals");
-    }    
+    }
+    
+    public void gotoFeeSheet()
+    {
+
+    }
 }

@@ -122,14 +122,17 @@ public class tasks {
         {
             
         }
-  
+        this.enterEncounter(description,category);
+             
+        
+    }
+    
+    public void enterEncounter(String description, String category)
+    {
         this.cl.switchToEncounter();          
         this.cl.byName("reason").sendKeys(description);
         this.cl.setSelectByContent("#pc_catid", category);
-        this.cl.byCSS("a[href='javascript:saveClicked();']").click();
-                    
-
-        
+        this.cl.byCSS("a[href='javascript:saveClicked();']").click();          
     }
     
     public void gotoFeeSheet()
